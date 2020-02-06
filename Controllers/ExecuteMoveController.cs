@@ -15,7 +15,7 @@ public class ExecuteMove : ControllerBase
         {
             return BadRequest();
         }
-        
+
         char neutralSymbol = '?';
         char azurePlayerSymbol = messagePayload.azurePlayerSymbol;
         char humanPlayerSymbol = messagePayload.humanPlayerSymbol;
@@ -23,6 +23,8 @@ public class ExecuteMove : ControllerBase
         int move = messagePayload.move;
 
         var game = new TicTacToe(neutralSymbol, azurePlayerSymbol, humanPlayerSymbol, gameBoardTiles);
+
+        
 
         var executeMoveResponse = game.playNextTurn(move);
 

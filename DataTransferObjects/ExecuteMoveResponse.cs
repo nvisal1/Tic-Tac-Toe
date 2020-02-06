@@ -1,7 +1,7 @@
 
 public class ExecuteMoveResponse
 {
-    public int move { get; set; }
+    public int? move { get; set; }
 
     public char azurePlayerSymbol { get; set; }
 
