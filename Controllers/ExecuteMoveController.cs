@@ -8,7 +8,11 @@ public class ExecuteMove : ControllerBase
     {
     }
 
+    /// <summary>
+    /// This endpoint allows a user to submit a move and receive a bot's responding move
+    /// </summary>
     [HttpPost("/executemove")]
+    [Produces("application/json")]
     public ActionResult<ExecuteMoveResponse> executeMove([FromBody] MessagePayload messagePayload)
     {
         if (!isExpectedPayload(messagePayload))
@@ -23,8 +27,6 @@ public class ExecuteMove : ControllerBase
         int move = messagePayload.move;
 
         var game = new TicTacToe(neutralSymbol, azurePlayerSymbol, humanPlayerSymbol, gameBoardTiles);
-
-        
 
         var executeMoveResponse = game.playNextTurn(move);
 
