@@ -2,14 +2,14 @@ using System.Linq;
 
 public class GameBoard {
 
-    private char[] gameBoardTiles { get; set; }
+    public char[] gameBoardTiles { get; set; }
     
     public GameBoard(char[] gameBoardTiles)
     {
         this.gameBoardTiles = gameBoardTiles;
     }
 
-    public char hasWinner(char botSymbol, char humanSymbol, char neutralSymbol)
+    public string getWinner(char playerOneSymbol, char playerTwoSymbol, char neutralSymbol)
     {
         int[,] winPositions = new int[,] { 
             { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 }, { 0, 3, 6 },
@@ -19,25 +19,30 @@ public class GameBoard {
         for (int i = 0; i < winPositions.GetLength(0); i++)
         {
             if (
-                this.gameBoardTiles[winPositions[i, 0]].Equals(botSymbol)
-                && this.gameBoardTiles[winPositions[i, 1]].Equals(botSymbol)
-                && this.gameBoardTiles[winPositions[i, 2]].Equals(botSymbol)
+                this.gameBoardTiles[winPositions[i, 0]].Equals(playerOneSymbol)
+                && this.gameBoardTiles[winPositions[i, 1]].Equals(playerOneSymbol)
+                && this.gameBoardTiles[winPositions[i, 2]].Equals(playerOneSymbol)
             )
             {
-                return botSymbol;
+                return playerOneSymbol.ToString();
             }
             else if (
-                this.gameBoardTiles[winPositions[i, 0]].Equals(humanSymbol)
-                && this.gameBoardTiles[winPositions[i, 1]].Equals(humanSymbol)
-                && this.gameBoardTiles[winPositions[i, 2]].Equals(humanSymbol)
+                this.gameBoardTiles[winPositions[i, 0]].Equals(playerTwoSymbol)
+                && this.gameBoardTiles[winPositions[i, 1]].Equals(playerTwoSymbol)
+                && this.gameBoardTiles[winPositions[i, 2]].Equals(playerTwoSymbol)
             )
             {
-                return humanSymbol;
+                return playerTwoSymbol.ToString();
             }
 
         }
 
-        return neutralSymbol;
+        if (getTileIndicies(neutralSymbol).Length == 0) {
+            return "tie";
+        }
+
+        return "inconclusive";
+        
     }
 
     public char[] getGameBoardTilesCopy()

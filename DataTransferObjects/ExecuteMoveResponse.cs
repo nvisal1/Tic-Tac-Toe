@@ -7,7 +7,7 @@ public class ExecuteMoveResponse
 
     public char humanPlayerSymbol { get; set; }
 
-    public char winner { get; set; }
+    public string winner { get; set; }
 
     public int[] winPositions { get; set; }
 
