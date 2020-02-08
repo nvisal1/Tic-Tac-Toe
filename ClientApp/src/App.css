@@ -1,6 +1,5 @@
-.tic-tac-toe-board-container {
+.game-board-container {
     display:inline-block;
-    margin: auto;
-    border: 3px solid green;
     padding: 10px;
 }
+
