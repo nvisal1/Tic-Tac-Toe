@@ -1,22 +1,56 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import { GameBoard } from './components/GameBoard/GameBoard';
+import * as request from 'request-promise';
+import './App.css';
 
 import './custom.css'
 
 export default class App extends Component {
-  static displayName = App.name;
+
+  state = {
+    isComplete: false,
+    playerSymbol: 'X',
+    opponentSymbol: 'O',
+    gameBoardTiles: ['?', '?', '?', '?', '?', '?', '?', '?', '?'],
+    isPlayerTurn: true,
+  };
 
   render () {
+    const { isComplete, gameBoardTiles, playerSymbol, opponentSymbol, isPlayerTurn } = this.state;
+
     return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-      </Layout>
+      <div className='tic-tac-toe-board-container'>
+        <GameBoard 
+          gameBoardTiles={ gameBoardTiles }
+          isPlayerTurn={ isPlayerTurn }
+          handleTileSelection={ this.handleTileSelection }
+        ></GameBoard>
+      </div>
     );
+  }
+
+  handleTileSelection = (index) => {
+    this.state.gameBoardTiles[index] = this.state.playerSymbol;
+    this.state.isPlayerTurn = false;
+
+    this.executeMove();
+
+  }
+
+  async executeMove() {
+    const options = {
+      method: 'POST',
+      uri: 'https://localhost:5001/executemove',
+      json: true,
+      body: {
+        move: 1,
+        azurePlayerSymbol: 'X',
+        humanPlayerSymbol: 'O',
+        gameBoard: ['?', '?', '?', '?', '?', '?', '?', '?', '?'],
+      }
+    };
+
+    const response = await request(options);
+    console.log(response);
   }
 }

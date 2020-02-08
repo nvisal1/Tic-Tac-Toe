@@ -26,6 +26,14 @@ namespace tic_tac_toe
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
+            {
+                builder
+                    .WithOrigins("http://localhost:3000")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
@@ -60,6 +68,7 @@ namespace tic_tac_toe
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             app.UseSwagger(c =>
             {
                 c.SerializeAsV2 = true;
@@ -89,6 +98,8 @@ namespace tic_tac_toe
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseCors("ApiCorsPolicy");
 
             app.UseEndpoints(endpoints =>
             {

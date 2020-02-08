@@ -23,7 +23,7 @@ public class Player {
             var tempTiles = gameBoard.getGameBoardTilesCopy();
             var tempGameBoard = new GameBoard(tempTiles);
             tempGameBoard.gameBoardTiles[emptyTileIndex] = this.symbol;
-            int score = calculatePredictedMoveScore(tempGameBoard, opponent, neutralSymbol, true);
+            int score = calculatePredictedMoveScore(tempGameBoard, opponent, neutralSymbol, false);
             
             if (score > maxScore)
             {
@@ -51,11 +51,12 @@ public class Player {
         // If this move results in a draw, continue
         string winner = gameBoard.getWinner(symbol, opponent.symbol, neutralSymbol);
         if (winner.Equals(symbol.ToString())) return 1;
-        else if (winner.Equals(opponent.symbol.ToString()) || winner.Equals("tie")) return 0;
+        else if (winner.Equals(opponent.symbol.ToString())) return -1;
+        else if (winner.Equals("tie")) return 0;
 
         if (isTurn)
         {
-            var bestScore = 0;
+            var bestScore = 100;
             foreach (int emptyTileIndex in emptyTileIndicies)
             {
                 // Assign the player's symbol to the specified empty tile
@@ -64,14 +65,14 @@ public class Player {
                 tempGameBoard.gameBoardTiles[emptyTileIndex] = currentSymbol;
                 int currentScore = calculatePredictedMoveScore(tempGameBoard, opponent, neutralSymbol, false);
                 tempGameBoard.gameBoardTiles[emptyTileIndex] = neutralSymbol;
-                if (currentScore > bestScore)
+                if (currentScore < bestScore)
                 {
                     bestScore = currentScore;
                 }
             }
             return bestScore;
         } else {
-            var bestScore = 100;
+            var bestScore = 0;
             foreach (int emptyTileIndex in emptyTileIndicies)
             {
                 // Assign the player's symbol to the specified empty tile
@@ -80,7 +81,7 @@ public class Player {
                 tempGameBoard.gameBoardTiles[emptyTileIndex] = currentSymbol;
                 int currentScore = calculatePredictedMoveScore(tempGameBoard, opponent, neutralSymbol, true);
                 tempGameBoard.gameBoardTiles[emptyTileIndex] = neutralSymbol;
-                if (currentScore < bestScore)
+                if (currentScore > bestScore)
                 {
                     bestScore = currentScore;
                 }
