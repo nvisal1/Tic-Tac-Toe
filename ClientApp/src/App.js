@@ -22,22 +22,21 @@ export default class App extends Component {
     const { winner, gameBoardTiles, playerSymbol, opponentSymbol, isPlayerTurn } = this.state;
 
     return (
-      <div>
-        <div>
-          <GameStateMessage
-            winner={ winner }
-            isPlayerTurn={ isPlayerTurn }
-          ></GameStateMessage>
+      <div className='tic-tac-toe'>
+        <div className='tic-tac-toe__new-game-form-container'>
+          <NewGameForm handleFormSubmit={ this.handleNewGameStart }></NewGameForm>
         </div>
-        <div className='game-board-container'>
+
+        <div className='tic-tac-toe__game-board-container'>
           <GameBoard 
             gameBoardTiles={ gameBoardTiles }
             isPlayerTurn={ isPlayerTurn }
             handleTileSelection={ this.handleTileSelection }
           ></GameBoard>
-        </div>
-        <div>
-          <NewGameForm handleFormSubmit={ this.handleNewGameStart }></NewGameForm>
+          <GameStateMessage
+            winner={ winner }
+            isPlayerTurn={ isPlayerTurn }
+          ></GameStateMessage>
         </div>
       </div>
       
@@ -78,7 +77,6 @@ export default class App extends Component {
     };
 
     const response = await request(options);
-    console.log(response);
     return response;
   }
 }

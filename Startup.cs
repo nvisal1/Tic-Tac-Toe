@@ -29,7 +29,7 @@ namespace tic_tac_toe
             services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
             {
                 builder
-                    .WithOrigins("http://localhost:3000")
+                    .WithOrigins("https://localhost:3000")
                     .AllowAnyMethod()
                     .AllowAnyHeader();
             }));

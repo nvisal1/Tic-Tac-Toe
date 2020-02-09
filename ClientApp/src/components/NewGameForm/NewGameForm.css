@@ -1,4 +1,27 @@
 .new-game-form {
-
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    border-radius: 5px;
+    padding: 20px;
 }
 
+.new-game-form__body {
+    margin-bottom: 30px;
+}
+
+.new-game-form__body__label {
+    font-size: 18px;
+}
+
+.new-game-form__button {
+    background-color: var(--app-blue);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 15px;
+    outline: none;
+}
+
+.new-game-form__button:hover {
+    background-color: white;
+    color: var(--app-blue);
+}

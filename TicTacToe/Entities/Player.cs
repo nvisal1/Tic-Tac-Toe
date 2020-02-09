@@ -1,3 +1,5 @@
+using System;
+
 public class Player {
 
     public char symbol;
@@ -7,88 +9,111 @@ public class Player {
         this.symbol = symbol;
     }
 
-    public PredictNextMoveResponse predictNextMove(Player opponent, GameBoard gameBoard, char neutralSymbol)
+    public int getOpponentVictoryTile(GameBoard gameBoard, Player opponent, char neutralSymbol)
     {
-        // Query for empty tiles in the game board
-        int[] emptyTileIndicies = gameBoard.getTileIndicies(neutralSymbol);
+        var opponentTiles = gameBoard.getTileIndicies(opponent.symbol);
 
-        var maxScore = -2;
-        var gameBoardTiles = gameBoard.gameBoardTiles;
-        var predictedGameBoardTiles = gameBoard.getGameBoardTilesCopy();
-        int move = 0;
+        int[,] winPositions = new int[,] { 
+            { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 }, { 0, 3, 6 },
+            { 1, 4, 7 }, { 2, 5, 8 }, { 0, 4, 8 }, { 2, 4, 6 },
+        };
 
-        // Iterate over all open spaces on the game board
-        foreach (int emptyTileIndex in emptyTileIndicies)
+        for (int i = 0; i < winPositions.GetLength(0); i++)
         {
-            var tempTiles = gameBoard.getGameBoardTilesCopy();
-            var tempGameBoard = new GameBoard(tempTiles);
-            tempGameBoard.gameBoardTiles[emptyTileIndex] = this.symbol;
-            int score = calculatePredictedMoveScore(tempGameBoard, opponent, neutralSymbol, false);
-            
-            if (score > maxScore)
+            var counter = 0;
+            var emptyTileIndex = -1;
+            for (int j = 0; j < 3; j++)
             {
-                maxScore = score;
-                gameBoardTiles.CopyTo(predictedGameBoardTiles, 0);
-                predictedGameBoardTiles[emptyTileIndex] = this.symbol;
-                move = emptyTileIndex;
+                if (gameBoard.gameBoardTiles[winPositions[i, j]].Equals(opponent.symbol))
+                {
+                    counter++;
+                } else if (gameBoard.gameBoardTiles[winPositions[i, j]].Equals(neutralSymbol)) {
+                    emptyTileIndex = winPositions[i, j];
+                }
+
+            }
+            if (counter == 2 && emptyTileIndex != -1)
+            {
+                return emptyTileIndex;
+            }
+
+        }
+
+        return -1;
+    }
+
+    public int findOptimalTile(GameBoard gameBoard, char neutralSymbol, Player opponent)
+    {
+        int[,] winPositions = new int[,] { 
+            { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 }, { 0, 3, 6 },
+            { 1, 4, 7 }, { 2, 5, 8 }, { 0, 4, 8 }, { 2, 4, 6 },
+        };
+
+        var myTiles = gameBoard.getTileIndicies(symbol);
+        var emptyTiles = gameBoard.getTileIndicies(neutralSymbol);
+
+        // If the bot does not have any tiles, pick
+        // a random starting point.
+        if (myTiles.Length == 0)
+        {
+            Random rnd = new Random();
+            return emptyTiles[rnd.Next(0, emptyTiles.Length - 1)];
+        }
+
+        // If the bot does have at least one tile
+        for (int i = 0; i < winPositions.GetLength(0); i++)
+        {
+            var opponentCount = 0;
+            var botCount = 0;
+            var emptyIndex = -1;
+            for (int j = 0; j < 3; j++)
+            {
+                // If the bot owns a tile that is associated with a particular rule,
+                // check if it can pursue the path
+                if (gameBoard.gameBoardTiles[winPositions[i, j]].Equals(symbol)) 
+                {
+                    botCount++;
+                } 
+                else if (gameBoard.gameBoardTiles[winPositions[i, j]].Equals(opponent.symbol))
+                {
+                    opponentCount++;
+                } 
+                else
+                {
+                    emptyIndex = winPositions[i, j];
+                }
+            }
+
+            if (opponentCount == 0 && botCount > 0) {
+                return emptyIndex;
             }
         }
-        
-        var predictedGameBoard = new GameBoard(predictedGameBoardTiles);
-        return new PredictNextMoveResponse() { move = move, gameBoard = predictedGameBoard };
+
+        return emptyTiles[0];
+
     }
 
-    private int calculatePredictedMoveScore(GameBoard gameBoard, Player opponent, char neutralSymbol, bool isTurn)
+    public GameBoard selectTile(GameBoard gameBoard, int index)
     {
-        // Get the symbol used by the player with the current turn
-        char currentSymbol = isTurn ? symbol : opponent.symbol;
-
-        // Query for empty tiles in the game board
-        int[] emptyTileIndicies = gameBoard.getTileIndicies(neutralSymbol);
-
-        // If this move results in a win, return 1
-        // If this move results in a loss, return -1
-        // If this move results in a draw, continue
-        string winner = gameBoard.getWinner(symbol, opponent.symbol, neutralSymbol);
-        if (winner.Equals(symbol.ToString())) return 1;
-        else if (winner.Equals(opponent.symbol.ToString())) return -1;
-        else if (winner.Equals("tie")) return 0;
-
-        if (isTurn)
-        {
-            var bestScore = 100;
-            foreach (int emptyTileIndex in emptyTileIndicies)
-            {
-                // Assign the player's symbol to the specified empty tile
-                var tempGameBoardTiles = gameBoard.getGameBoardTilesCopy();
-                var tempGameBoard = new GameBoard(tempGameBoardTiles);
-                tempGameBoard.gameBoardTiles[emptyTileIndex] = currentSymbol;
-                int currentScore = calculatePredictedMoveScore(tempGameBoard, opponent, neutralSymbol, false);
-                tempGameBoard.gameBoardTiles[emptyTileIndex] = neutralSymbol;
-                if (currentScore < bestScore)
-                {
-                    bestScore = currentScore;
-                }
-            }
-            return bestScore;
-        } else {
-            var bestScore = 0;
-            foreach (int emptyTileIndex in emptyTileIndicies)
-            {
-                // Assign the player's symbol to the specified empty tile
-                var tempGameBoardTiles = gameBoard.getGameBoardTilesCopy();
-                var tempGameBoard = new GameBoard(tempGameBoardTiles);
-                tempGameBoard.gameBoardTiles[emptyTileIndex] = currentSymbol;
-                int currentScore = calculatePredictedMoveScore(tempGameBoard, opponent, neutralSymbol, true);
-                tempGameBoard.gameBoardTiles[emptyTileIndex] = neutralSymbol;
-                if (currentScore > bestScore)
-                {
-                    bestScore = currentScore;
-                }
-   
-            }
-            return bestScore;
-        }  
+        gameBoard.gameBoardTiles[index] = symbol;
+        return gameBoard;
     }
-
 }
+
+
+// Check if the opponent is about to win
+// If so, block the winning tile
+
+// Else, check if the bot has any tiles
+
+// If so, find a winning rule associated 
+// with each owned tile and check to
+// see if it can be pursued
+
+// Else, pick a random starting point
+
+// If best case if a tie, take next
+// available tile
+
+
+

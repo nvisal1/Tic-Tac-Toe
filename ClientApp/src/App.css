@@ -1,5 +1,14 @@
-.game-board-container {
-    display:inline-block;
-    padding: 10px;
+.tic-tac-toe {
+    max-width: 1440px;
+    padding: 100px 20px;
+    display: flex;
+    text-align: center;
 }
 
+.tic-tac-toe__game-board-container {
+    margin: auto;
+}
+
+.tic-tac-toe__new-game-form-container {
+    margin: auto;
+}

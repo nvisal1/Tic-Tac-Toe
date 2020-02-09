@@ -43,33 +43,63 @@ public class TicTacToe
         }
 
     
-        var predictNextMoveResponse = currentPlayer.predictNextMove(opponentPlayer, gameBoard, neutralSymbol);
-        var newGameBoard = predictNextMoveResponse.gameBoard;
-        var newMove = predictNextMoveResponse.move;
-
-        var winner = newGameBoard.getWinner(playerOne.symbol, playerTwo.symbol, neutralSymbol);
-
-        
-        int[] winPositions = new int[9];
-        bool hasWinner = false;
-        if (winner.Equals(playerOne.symbol.ToString()))
+        // var predictNextMoveResponse = currentPlayer.predictNextMove(opponentPlayer, gameBoard, neutralSymbol);
+        var blockingMoveIndex = currentPlayer.getOpponentVictoryTile(gameBoard, opponentPlayer, neutralSymbol);
+        if (blockingMoveIndex != -1)
         {
-            winPositions = newGameBoard.getTileIndicies(playerOne.symbol);
-            hasWinner = true;
+            var newGameBoard = currentPlayer.selectTile(gameBoard, blockingMoveIndex);
+            var winner = newGameBoard.getWinner(playerOne.symbol, playerTwo.symbol, neutralSymbol);
+
+            int[] winPositions = new int[9];
+            bool hasWinner = false;
+            if (winner.Equals(playerOne.symbol.ToString()))
+            {
+                winPositions = newGameBoard.getTileIndicies(playerOne.symbol);
+                hasWinner = true;
+            }
+            else if (winner.Equals(playerTwo.symbol.ToString()))
+            {
+                winPositions = newGameBoard.getTileIndicies(playerTwo.symbol);
+                hasWinner = true;
+            }
+
+            return new ExecuteMoveResponse()
+            {
+                move = blockingMoveIndex,
+                winner = winner,
+                winPositions = hasWinner ? winPositions : null,
+                gameBoard = newGameBoard.gameBoardTiles,
+            };
         }
-        else if (winner.Equals(playerTwo.symbol.ToString()))
-        {
-            winPositions = newGameBoard.getTileIndicies(playerTwo.symbol);
-            hasWinner = true;
-        }
+        else {
+            var optimalTileIndex = currentPlayer.findOptimalTile(gameBoard, neutralSymbol, opponentPlayer);
+            var newGameBoard = currentPlayer.selectTile(gameBoard, optimalTileIndex);
 
-        return new ExecuteMoveResponse()
-        {
-            move = predictNextMoveResponse.move,
-            winner = winner,
-            winPositions = hasWinner ? winPositions : null,
-            gameBoard = newGameBoard.gameBoardTiles,
-        };
+            var winner = newGameBoard.getWinner(playerOne.symbol, playerTwo.symbol, neutralSymbol);
+
+            
+            int[] winPositions = new int[9];
+            bool hasWinner = false;
+            if (winner.Equals(playerOne.symbol.ToString()))
+            {
+                winPositions = newGameBoard.getTileIndicies(playerOne.symbol);
+                hasWinner = true;
+            }
+            else if (winner.Equals(playerTwo.symbol.ToString()))
+            {
+                winPositions = newGameBoard.getTileIndicies(playerTwo.symbol);
+                hasWinner = true;
+            }
+
+            return new ExecuteMoveResponse()
+            {
+                move = optimalTileIndex,
+                winner = winner,
+                winPositions = hasWinner ? winPositions : null,
+                gameBoard = newGameBoard.gameBoardTiles,
+            };
+        }
+      
     }
 
     private PlayerRoles getPlayerRoles(int move)
