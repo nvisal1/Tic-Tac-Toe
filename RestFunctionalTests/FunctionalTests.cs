@@ -227,7 +227,7 @@ namespace RestFunctionalTests
             {
                 Move = 0,
                 AzurePlayerSymbol = "Q",
-                HumanPlayerSymbol = "X",
+                HumanPlayerSymbol = "",
                 GameBoard = new string[9] {
                     "O", "?", "X",
                     "X", "O", "?",
