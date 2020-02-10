@@ -71,7 +71,7 @@ public class ExecuteMove : ControllerBase
         {
             move = earlyWin ? null : move,
             winner = gameState,
-            winPositions = gameState.Equals(Constants.TIE) || gameState.Equals(Constants.INCONCLUSIVE) ? null : gameBoard.getWinPositions(gameState, azurePlayerSymbol, humanPlayerSymbol),
+            winPositions = gameState.Equals(Constants.TIE) || gameState.Equals(Constants.INCONCLUSIVE) ? null : gameBoard.GetTileIndicies(gameState.ToCharArray()[0]),
             gameBoard = gameBoard.gameBoardTiles,
             azurePlayerSymbol = azurePlayerSymbol,
             humanPlayerSymbol = humanPlayerSymbol,

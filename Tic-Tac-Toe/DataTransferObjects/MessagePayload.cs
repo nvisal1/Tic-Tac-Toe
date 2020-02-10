@@ -77,13 +77,13 @@ public class MessagePayload
         // For example, if the AzurePlayerSymbol is X and there are
         // 3 X's on the gameBoard, there must be 4 O's on the gameBoard.
         GameBoard tempGameBoard = new GameBoard(gameBoard);
-        var emptySymbolLength = tempGameBoard.getTileIndicies(Constants.NEUTRAL_SYMBOL);
+        var emptySymbolLength = tempGameBoard.GetTileIndicies(Constants.NEUTRAL_SYMBOL);
         if (emptySymbolLength.Length == Constants.GAME_BOARD_LENGTH)
         {
             return true;
         }
-        var azurePlayerSymbolCount = tempGameBoard.getTileIndicies(azurePlayerSymbol).Length;
-        var humanPlayerSymbolCount = tempGameBoard.getTileIndicies(humanPlayerSymbol).Length;
+        var azurePlayerSymbolCount = tempGameBoard.GetTileIndicies(azurePlayerSymbol).Length;
+        var humanPlayerSymbolCount = tempGameBoard.GetTileIndicies(humanPlayerSymbol).Length;
 
         if (Math.Abs(azurePlayerSymbolCount - humanPlayerSymbolCount) != 1)
         {
