@@ -47,6 +47,7 @@ public class ExecuteMove : ControllerBase
 
 
     /// <summary>
+    /// 
     /// GenerateExecuteMoveResponse creates a new ExecuteMoveResponse.
     /// 
     /// If earlyWin is set to true, move will be set to null.
@@ -55,6 +56,7 @@ public class ExecuteMove : ControllerBase
     /// 
     /// If gameState contains a winning symbol, this function will find the game board indicies that
     /// contain the winning symbol.
+    /// 
     /// </summary>
     /// <param name="gameState">string value containing "X" || "O" || "tie" || "inconclusive" </param>
     /// <param name="move"> int value representing the index of the most recently changed game board tile </param>
