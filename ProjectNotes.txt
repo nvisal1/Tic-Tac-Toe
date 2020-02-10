@@ -2,4 +2,6 @@
 Nick Visalli
 nvisal1@students.towson.edu
 
-
+Client: http://tictactoeassignment.azurewebsites.net/tic-tac-toe
+Swagger: http://tictactoeassignment.azurewebsites.net
+Execute Move API: http://tictactoeassignment.azurewebsites.net/executemov

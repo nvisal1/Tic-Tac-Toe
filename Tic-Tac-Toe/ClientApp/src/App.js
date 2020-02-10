@@ -66,7 +66,7 @@ export default class App extends Component {
   async executeMove(index) { 
     const options = {
       method: 'POST',
-      uri: 'https://localhost:44365/executemove',
+        uri: 'http://tictactoeassignment.azurewebsites.net/executemove',
       json: true,
       body: {
           move: index,
