@@ -187,11 +187,12 @@ namespace RestFunctionalTests
             catch (HttpOperationException error)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, error.Response.StatusCode);
+                Assert.IsTrue(error.Response.Content.Equals("\"azurePlayerSymbol and humanPlayerSymbol must be opposites\""));
             }
         }
 
         [TestMethod]
-        public void VerifyInvalidPlayerSymbol()
+        public void VerifyInvalidHumanPlayerSymbol()
         {
             MessagePayload body = new MessagePayload()
             {
@@ -215,6 +216,36 @@ namespace RestFunctionalTests
             catch (HttpOperationException error)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, error.Response.StatusCode);
+                Assert.IsTrue(error.Response.Content.Equals("\"humanPlayerSymbol must be either 'O' or 'X'\""));
+            }
+        }
+
+        [TestMethod]
+        public void VerifyInvalidAzurePlayerSymbol()
+        {
+            MessagePayload body = new MessagePayload()
+            {
+                Move = 0,
+                AzurePlayerSymbol = "Q",
+                HumanPlayerSymbol = "X",
+                GameBoard = new string[9] {
+                    "O", "?", "X",
+                    "X", "O", "?",
+                    "O", "?", "?"
+                }
+            };
+
+            try
+            {
+                ExecuteMoveResponse response = client.ExecuteMove(body);
+
+                // Fail if an HttpOperationException is not thrown
+                Assert.IsTrue(false);
+            }
+            catch (HttpOperationException error)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, error.Response.StatusCode);
+                Assert.IsTrue(error.Response.Content.Equals("\"azurePlayerSymbol must be either 'O' or 'X'\""));
             }
         }
 
@@ -243,6 +274,7 @@ namespace RestFunctionalTests
             catch (HttpOperationException error)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, error.Response.StatusCode);
+                Assert.IsTrue(error.Response.Content.Equals("\"gameBoard can only contain 'X', 'O', or '?'\""));
             }
         }
 
@@ -270,6 +302,7 @@ namespace RestFunctionalTests
             catch (HttpOperationException error)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, error.Response.StatusCode);
+                Assert.IsTrue(error.Response.Content.Equals("\"gameboard must have a length of 9 (0 - 8)\""));
             }
         }
 
@@ -299,6 +332,7 @@ namespace RestFunctionalTests
             catch (HttpOperationException error)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, error.Response.StatusCode);
+                Assert.IsTrue(error.Response.Content.Equals("\"gameboard must have a length of 9 (0 - 8)\""));
             }
         }
 
@@ -327,6 +361,7 @@ namespace RestFunctionalTests
             catch (HttpOperationException error)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, error.Response.StatusCode);
+                Assert.IsTrue(error.Response.Content.Equals("\"The difference in symbol counts should be no greater than 1\""));
             }
         }
 
@@ -355,6 +390,7 @@ namespace RestFunctionalTests
             catch (HttpOperationException error)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, error.Response.StatusCode);
+                Assert.IsTrue(error.Response.Content.Equals("\"There should be less AzurePlayerSymbols than humanPlayerSymbols on the gameBoard\""));
             }
         }
 

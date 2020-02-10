@@ -31,42 +31,42 @@ public class MessagePayload
     /// </summary>
     public char[] gameBoard { get; set; }
 
-    public bool IsExpectedFormat()
+    public void IsExpectedFormat()
     {
-        // move should  be an intger between 0 and 8
+        // move should be an intger between 0 and 8
         if (move < 0 || move > 8)
         {
-            return false;
+            throw new ArgumentException("move should  be an intger between 0 and 8");
         }
 
         // azurePlayerSymbol must be either 'O' or 'X' 
         if (!(azurePlayerSymbol.Equals(Constants.POSSIBLE_SYMBOL_ONE)) && !(azurePlayerSymbol.Equals(Constants.POSSIBLE_SYMBOL_TWO)))
         {
-            return false;
+            throw new ArgumentException("azurePlayerSymbol must be either 'O' or 'X'");
         }
 
         // humanPlayerSymbol must be either 'O' or 'X' 
         if (!(humanPlayerSymbol.Equals(Constants.POSSIBLE_SYMBOL_ONE)) && !(humanPlayerSymbol.Equals(Constants.POSSIBLE_SYMBOL_TWO)))
         {
-            return false;
+            throw new ArgumentException("humanPlayerSymbol must be either 'O' or 'X'");
         }
 
         // azurePlayerSymbol and humanPlayerSymbol must be opposites
         if (azurePlayerSymbol.Equals(humanPlayerSymbol))
         {
-            return false;
+            throw new ArgumentException("azurePlayerSymbol and humanPlayerSymbol must be opposites");
         }
 
         // gameBoard can only contain 'X', 'O', or '?'
         if (Array.Exists(gameBoard, tile => tile != Constants.POSSIBLE_SYMBOL_ONE && tile != Constants.POSSIBLE_SYMBOL_TWO && tile != Constants.NEUTRAL_SYMBOL))
         {
-            return false;
+            throw new ArgumentException("gameBoard can only contain 'X', 'O', or '?'");
         }
 
         // gameboard must have a length of 9 (0 - 8)
         if (gameBoard.Length != Constants.GAME_BOARD_LENGTH)
         {
-            return false;
+            throw new ArgumentException("gameboard must have a length of 9 (0 - 8)");
         }
 
         // The gameBoard must have the correct number of player symbols.
@@ -80,21 +80,19 @@ public class MessagePayload
         var emptySymbolLength = tempGameBoard.GetTileIndicies(Constants.NEUTRAL_SYMBOL);
         if (emptySymbolLength.Length == Constants.GAME_BOARD_LENGTH)
         {
-            return true;
+            return;
         }
         var azurePlayerSymbolCount = tempGameBoard.GetTileIndicies(azurePlayerSymbol).Length;
         var humanPlayerSymbolCount = tempGameBoard.GetTileIndicies(humanPlayerSymbol).Length;
 
         if (Math.Abs(azurePlayerSymbolCount - humanPlayerSymbolCount) != 1)
         {
-            return false;
+            throw new ArgumentException("The difference in symbol counts should be no greater than 1");
         }
 
         if (azurePlayerSymbolCount >= humanPlayerSymbolCount)
         {
-            return false;
+            throw new ArgumentException("There should be less AzurePlayerSymbols than humanPlayerSymbols on the gameBoard");
         }
-
-        return true;
     }
 }

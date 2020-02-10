@@ -1,4 +1,6 @@
 using System;
+using System.Net;
+using System.Net.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +21,13 @@ public class ExecuteMove : ControllerBase
     {
         // Check the format of the given message payload.
         // Return status 400 to the client if the format is incorrect.
-        if (!messagePayload.IsExpectedFormat())
+        try
         {
-            return BadRequest();
+            messagePayload.IsExpectedFormat();
+        }
+        catch (ArgumentException error)
+        {
+            return BadRequest(error.Message);
         }
 
         // Check the initial state of the given game board.
