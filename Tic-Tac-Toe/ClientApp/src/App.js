@@ -63,7 +63,7 @@ export default class App extends Component {
     });
   }
 
-  async executeMove(index) {
+  async executeMove(index) { 
     const options = {
       method: 'POST',
       uri: 'https://localhost:44365/executemove',
