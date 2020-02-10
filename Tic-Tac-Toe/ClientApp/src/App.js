@@ -69,10 +69,10 @@ export default class App extends Component {
       uri: 'https://localhost:44365/executemove',
       json: true,
       body: {
-        move: index,
-        azurePlayerSymbol: this.state.playerSymbol,
-        humanPlayerSymbol: this.state.opponentSymbol,
-        gameBoard: this.state.gameBoardTiles,
+          move: index,
+          azurePlayerSymbol: this.state.opponentSymbol,
+          humanPlayerSymbol: this.state.playerSymbol,
+          gameBoard: this.state.gameBoardTiles,
       }
     };
 

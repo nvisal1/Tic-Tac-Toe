@@ -13,19 +13,17 @@ namespace RestFunctionalTests
     public class FunctionalTests
     {
         const string LocalEndpointUrl = "https://localhost:44365";
+        static ServiceClientCredentials serviceClientCredentials = new TokenCredentials("FakeTokenValue");
+        static readonly ClientRestSDKLibraryClient client = new ClientRestSDKLibraryClient(new Uri(LocalEndpointUrl), serviceClientCredentials);
 
         [TestMethod]
         public void VerifyPlayerXWinner()
         {
-            ServiceClientCredentials serviceClientCredentials = new TokenCredentials("FakeTokenValue");
-
-            ClientRestSDKLibraryClient client = new ClientRestSDKLibraryClient(new Uri(LocalEndpointUrl), serviceClientCredentials);
-
             MessagePayload body = new MessagePayload()
             {
                 Move = 0,
-                AzurePlayerSymbol = "X",
-                HumanPlayerSymbol = "O",
+                AzurePlayerSymbol = "O",
+                HumanPlayerSymbol = "X",
                 GameBoard = new string[9] {
                     "X", "O", "?",
                     "X", "O", "?",
@@ -43,10 +41,6 @@ namespace RestFunctionalTests
         [TestMethod]
         public void VerifyPlayerOWinner()
         {
-            ServiceClientCredentials serviceClientCredentials = new TokenCredentials("FakeTokenValue");
-
-            ClientRestSDKLibraryClient client = new ClientRestSDKLibraryClient(new Uri(LocalEndpointUrl), serviceClientCredentials);
-
             MessagePayload body = new MessagePayload()
             {
                 Move = 0,
@@ -69,15 +63,11 @@ namespace RestFunctionalTests
         [TestMethod]
         public void VerifyTie()
         {
-            ServiceClientCredentials serviceClientCredentials = new TokenCredentials("FakeTokenValue");
-
-            ClientRestSDKLibraryClient client = new ClientRestSDKLibraryClient(new Uri(LocalEndpointUrl), serviceClientCredentials);
-
             MessagePayload body = new MessagePayload()
             {
                 Move = 0,
-                AzurePlayerSymbol = "X",
-                HumanPlayerSymbol = "O",
+                AzurePlayerSymbol = "O",
+                HumanPlayerSymbol = "X",
                 GameBoard = new string[9] {
                     "O", "X", "O",
                     "O", "X", "X",
@@ -95,10 +85,6 @@ namespace RestFunctionalTests
         [TestMethod]
         public void VerifyInconclusive()
         {
-            ServiceClientCredentials serviceClientCredentials = new TokenCredentials("FakeTokenValue");
-
-            ClientRestSDKLibraryClient client = new ClientRestSDKLibraryClient(new Uri(LocalEndpointUrl), serviceClientCredentials);
-
             MessagePayload body = new MessagePayload()
             {
                 Move = 0,
@@ -121,10 +107,6 @@ namespace RestFunctionalTests
         [TestMethod]
         public void VerifyAzureXSymbol()
         {
-            ServiceClientCredentials serviceClientCredentials = new TokenCredentials("FakeTokenValue");
-
-            ClientRestSDKLibraryClient client = new ClientRestSDKLibraryClient(new Uri(LocalEndpointUrl), serviceClientCredentials);
-
             MessagePayload body = new MessagePayload()
             {
                 Move = 0,
@@ -154,10 +136,6 @@ namespace RestFunctionalTests
         [TestMethod]
         public void VerifyAzureOSymbol()
         {
-            ServiceClientCredentials serviceClientCredentials = new TokenCredentials("FakeTokenValue");
-
-            ClientRestSDKLibraryClient client = new ClientRestSDKLibraryClient(new Uri(LocalEndpointUrl), serviceClientCredentials);
-
             MessagePayload body = new MessagePayload()
             {
                 Move = 0,
@@ -187,10 +165,6 @@ namespace RestFunctionalTests
         [TestMethod]
         public void VerifySamePlayerSymbols()
         {
-            ServiceClientCredentials serviceClientCredentials = new TokenCredentials("FakeTokenValue");
-
-            ClientRestSDKLibraryClient client = new ClientRestSDKLibraryClient(new Uri(LocalEndpointUrl), serviceClientCredentials);
-
             MessagePayload body = new MessagePayload()
             {
                 Move = 0,
@@ -219,10 +193,6 @@ namespace RestFunctionalTests
         [TestMethod]
         public void VerifyInvalidPlayerSymbol()
         {
-            ServiceClientCredentials serviceClientCredentials = new TokenCredentials("FakeTokenValue");
-
-            ClientRestSDKLibraryClient client = new ClientRestSDKLibraryClient(new Uri(LocalEndpointUrl), serviceClientCredentials);
-
             MessagePayload body = new MessagePayload()
             {
                 Move = 0,
@@ -251,10 +221,6 @@ namespace RestFunctionalTests
         [TestMethod]
         public void VerifyInvalidGameBoardSymbols()
         {
-            ServiceClientCredentials serviceClientCredentials = new TokenCredentials("FakeTokenValue");
-
-            ClientRestSDKLibraryClient client = new ClientRestSDKLibraryClient(new Uri(LocalEndpointUrl), serviceClientCredentials);
-
             MessagePayload body = new MessagePayload()
             {
                 Move = 0,
@@ -283,10 +249,6 @@ namespace RestFunctionalTests
         [TestMethod]
         public void VerifySmallerGameBoardLength()
         {
-            ServiceClientCredentials serviceClientCredentials = new TokenCredentials("FakeTokenValue");
-
-            ClientRestSDKLibraryClient client = new ClientRestSDKLibraryClient(new Uri(LocalEndpointUrl), serviceClientCredentials);
-
             MessagePayload body = new MessagePayload()
             {
                 Move = 0,
@@ -314,10 +276,6 @@ namespace RestFunctionalTests
         [TestMethod]
         public void VerifyLargerGameBoardLength()
         {
-            ServiceClientCredentials serviceClientCredentials = new TokenCredentials("FakeTokenValue");
-
-            ClientRestSDKLibraryClient client = new ClientRestSDKLibraryClient(new Uri(LocalEndpointUrl), serviceClientCredentials);
-
             MessagePayload body = new MessagePayload()
             {
                 Move = 0,
@@ -347,10 +305,6 @@ namespace RestFunctionalTests
         [TestMethod]
         public void VerifyGameBoardImbalance()
         {
-            ServiceClientCredentials serviceClientCredentials = new TokenCredentials("FakeTokenValue");
-
-            ClientRestSDKLibraryClient client = new ClientRestSDKLibraryClient(new Uri(LocalEndpointUrl), serviceClientCredentials);
-
             MessagePayload body = new MessagePayload()
             {
                 Move = 0,
@@ -379,10 +333,6 @@ namespace RestFunctionalTests
         [TestMethod]
         public void VerifyDoubleTurn()
         {
-            ServiceClientCredentials serviceClientCredentials = new TokenCredentials("FakeTokenValue");
-
-            ClientRestSDKLibraryClient client = new ClientRestSDKLibraryClient(new Uri(LocalEndpointUrl), serviceClientCredentials);
-
             MessagePayload body = new MessagePayload()
             {
                 Move = 0,
@@ -411,10 +361,6 @@ namespace RestFunctionalTests
         [TestMethod]
         public void VerifyEmptyBoard()
         {
-            ServiceClientCredentials serviceClientCredentials = new TokenCredentials("FakeTokenValue");
-
-            ClientRestSDKLibraryClient client = new ClientRestSDKLibraryClient(new Uri(LocalEndpointUrl), serviceClientCredentials);
-
             MessagePayload body = new MessagePayload()
             {
                 Move = 0,
