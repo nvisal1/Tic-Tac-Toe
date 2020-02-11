@@ -4,4 +4,8 @@ nvisal1@students.towson.edu
 
 Client: http://tictactoeassignment.azurewebsites.net/tic-tac-toe
 Swagger: http://tictactoeassignment.azurewebsites.net
-Execute Move API: http://tictactoeassignment.azurewebsites.net/executemov
+Execute Move API: http://tictactoeassignment.azurewebsites.net/executemove
+
+The hosted client is not secure. You will need to adjust your browser settings in order to see the hosted client.
+Alternatively, you can run this project locally. The local client is already configured to use the hosted API.
+

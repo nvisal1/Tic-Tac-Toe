@@ -7,6 +7,12 @@ import './App.css';
 import './custom.css'
 import { GameStateMessage } from './components/GameStateMessage/GameStateMessage';
 
+/**
+ * App is responsible for orchestrating
+ * functional components to build the view.
+ * 
+ * App is the only stateful component
+ */
 export default class App extends Component {
 
   state = {
@@ -19,7 +25,7 @@ export default class App extends Component {
   };
 
   render () {
-    const { winner, gameBoardTiles, playerSymbol, opponentSymbol, isPlayerTurn } = this.state;
+    const { winner, gameBoardTiles, isPlayerTurn } = this.state;
 
     return (
       <div className='tic-tac-toe'>
@@ -43,15 +49,30 @@ export default class App extends Component {
     );
   }
 
+  /**
+   * handleTileSelection accepts the index of the selected
+   * tile and sends it to the API. The API response is
+   * then used to alter the state of the game.
+   */
   handleTileSelection = async (index) => {
     this.state.gameBoardTiles[index] = this.state.playerSymbol;
     this.state.isPlayerTurn = false;
 
     const executeMoveResponse = await this.executeMove(index);
-    const { gameBoard, winner, winPositions, move } = executeMoveResponse;
-    this.setState({ gameBoardTiles: gameBoard, winner, winPositions, isPlayerTurn: true });
+    const { gameBoard, winner, winPositions } = executeMoveResponse;
+
+    if (winner !== 'inconclusive') {
+        this.setState({ gameBoardTiles: gameBoard, winner, winPositions, isPlayerTurn: false });
+    } else {
+        this.setState({ gameBoardTiles: gameBoard, winner, winPositions, isPlayerTurn: true });
+    }
+ 
   }
 
+ /**
+  * handleNewGameStart accepts a player symbol
+  * and uses it to start a new game.
+  */
   handleNewGameStart = (symbol) => {
     this.setState({
       winner: 'inconclusive',
@@ -63,10 +84,15 @@ export default class App extends Component {
     });
   }
 
+  /**
+   * executeMove sends a POST request
+   * containing information about the
+   * players turn to the API
+   */
   async executeMove(index) { 
     const options = {
       method: 'POST',
-        uri: 'http://tictactoeassignment.azurewebsites.net/executemove',
+        uri: 'https://tictactoeassignment.azurewebsites.net/executemove',
       json: true,
       body: {
           move: index,

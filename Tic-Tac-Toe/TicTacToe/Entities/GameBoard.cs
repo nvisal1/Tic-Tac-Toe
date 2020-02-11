@@ -1,6 +1,13 @@
 using System;
 using System.Linq;
 
+/// <summary>
+/// 
+/// GameBoard includes all of the logic
+/// for searching for symbols within 
+/// the game board.
+/// 
+/// </summary>
 public class GameBoard {
 
     public char[] gameBoardTiles { get; set; }

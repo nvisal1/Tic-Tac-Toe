@@ -1,5 +1,11 @@
 using System;
 
+/// <summary>
+/// 
+/// Player includes all of the actions
+/// that a player can take.
+/// 
+/// </summary>
 public class Player {
 
     private readonly char symbol;
